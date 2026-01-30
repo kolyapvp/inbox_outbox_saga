@@ -124,30 +124,6 @@
 
 ## Начало работы (Getting Started)
 
-## Публикация в публичный Git (важно)
-
-Перед тем как выкладывать репозиторий в публичный доступ:
-
-1) Проверьте, что в коммит не попали большие/локальные директории и артефакты:
-   - `frontend/node_modules/`, `frontend/dist/`, `venv/`, `bin/`, `*.log`, `.project.pids`
-
-   Для Docker сборок добавлен `.dockerignore`, чтобы эти директории не отправлялись в build context.
-
-2) Не коммитьте реальные секреты.
-   В этом репозитории используются *демо-значения* для локального запуска (они не являются продовыми секретами, но их всё равно лучше держать как локальные настройки):
-   - `config.yaml` (Postgres password) — файл теперь в `.gitignore`, используйте `config.example.yaml`.
-   - `docker-compose.yml` содержит демо-пароли (`POSTGRES_PASSWORD=password`, `GF_SECURITY_ADMIN_PASSWORD=admin`). Не используйте их в проде.
-   - Kubernetes манифесты:
-     - `k8s/secrets/secret-store.yaml` содержит Vault token. В репозитории стоит заглушка `REPLACE_ME`.
-     - `k8s/platform/vault.yaml` содержит Vault dev root token. В репозитории стоит заглушка `REPLACE_ME`.
-     Перед применением манифестов замените `REPLACE_ME` на локальное значение.
-
-3) Быстрая проверка перед первым коммитом:
-   ```bash
-   git status
-   ```
-   Убедитесь, что там нет `frontend/node_modules`, `venv`, `*.log`.
-
 1.  **Запуск всего проекта (Backend + Frontend + Infra)**:
     ```bash
     make up
