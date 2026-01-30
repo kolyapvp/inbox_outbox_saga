@@ -1,0 +1,28 @@
+# Example config for local dev.
+# Copy to config.yaml if you want file-based config:
+#   cp config.example.yaml config.yaml
+#
+# Note: docker-compose uses demo credentials; do not reuse for production.
+
+http:
+  port: "8080"
+  timeout: 5s
+
+postgres:
+  host: postgres
+  port: "5432"
+  user: user
+  password: password
+  dbname: wb_tech
+  pool_max: 10
+
+redis:
+  addr: redis:6379
+  password: ""
+  db: 0
+
+kafka:
+  brokers:
+    - kafka:29092
+  topic: orders-events
+  group_id: orders-consumer-group-1

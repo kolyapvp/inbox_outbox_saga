@@ -1,0 +1,60 @@
+# Binaries
+bin/
+main
+
+# Go build artifacts
+*.exe
+*.exe~
+*.test
+*.out
+
+# Local run state
+.project.pids
+*.pid
+
+# IDEs
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+
+# Vendor
+vendor/
+
+# Environment variables
+.env
+.env.*
+
+# Local config (copy from config.example.yaml)
+config.yaml
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# Test coverage
+coverage.out
+
+# Audio/Video
+*.mov
+*.mp3
+*.wav
+
+# Whisper artifacts
+artifacts/
+venv/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/.eslintcache
+
+# Logs
+*.log
+
+# Misc
+*~
+*.swp

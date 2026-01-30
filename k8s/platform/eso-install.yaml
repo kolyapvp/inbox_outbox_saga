@@ -1,0 +1,9 @@
+# Install External Secrets Operator using the official bundle
+# This is a pointer file. In a real environment, you might use Helm.
+# Run: kubectl apply -f https://raw.githubusercontent.com/external-secrets/external-secrets/v0.9.11/deploy/crds/bundle.yaml
+# But for stability in this task, we will just use the makefile command or assume it's applying the remote URL.
+# Here we just list the command to be included in our "Apply all" logic if we were pulling it locally.
+
+apiVersion: v1
+kind: List
+items: []

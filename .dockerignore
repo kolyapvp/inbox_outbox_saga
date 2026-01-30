@@ -1,0 +1,20 @@
+# Keep Docker build context small.
+
+.git/
+.DS_Store
+
+*.log
+bin/
+artifacts/
+venv/
+
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+.project.pids
+.env
+.env.*
+
+# Local-only config; image uses config.example.yaml
+config.yaml

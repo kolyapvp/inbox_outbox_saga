@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package order;
+
+option go_package = "project/internal/grpc/proto";
+
+service OrderService {
+  rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
+}
+
+message CreateOrderRequest {
+  string user_id = 1;
+  double amount = 2;
+}
+
+message CreateOrderResponse {
+  string order_id = 1;
+  string status = 2;
+}
