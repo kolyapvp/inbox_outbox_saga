@@ -89,12 +89,13 @@ func main() {
 	defer kafkaConsumer.Close()
 
 	consumerName := "ticket-service"
-	logger.Info("Ticket Service Started", "consumer", consumerName, "group_id", groupID)
+	logger.Info("Ticket Service Started", "consumer", consumerName, "group_id", groupID, "topic", cfg.Kafka.Topic, "brokers", cfg.Kafka.Brokers)
 
 	for {
 		msg, err := kafkaConsumer.FetchMessage(ctx)
 		if err != nil {
 			if ctx.Err() != nil {
+				logger.Info("Ticket Service stopping")
 				break
 			}
 			logger.Error("failed to fetch message", "error", err)
@@ -120,6 +121,8 @@ func main() {
 				if ev.Type != "PaymentAuthorized" {
 					return nil
 				}
+
+				logger.Info("Received event", "type", ev.Type, "correlation_id", ev.CorrelationID, "event_id", ev.ID)
 
 				var p paymentAuthorizedPayload
 				if err := json.Unmarshal(ev.Payload, &p); err != nil {

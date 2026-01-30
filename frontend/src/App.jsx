@@ -137,7 +137,7 @@ function App() {
         />
       )}
 
-      <h1>Aviasales Clone</h1>
+      <h1>Outbox Inbox SAGA example</h1>
 
       <SearchForm onSearch={handleSearch} />
 

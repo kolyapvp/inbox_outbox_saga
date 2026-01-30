@@ -53,6 +53,7 @@ frontend/.vite/
 frontend/.eslintcache
 
 # Logs
+logs
 *.log
 
 # Misc

@@ -85,12 +85,13 @@ func main() {
 	defer kafkaConsumer.Close()
 
 	consumerName := "payment-service"
-	logger.Info("Payment Service Started", "consumer", consumerName, "group_id", groupID)
+	logger.Info("Payment Service Started", "consumer", consumerName, "group_id", groupID, "topic", cfg.Kafka.Topic, "brokers", cfg.Kafka.Brokers)
 
 	for {
 		msg, err := kafkaConsumer.FetchMessage(ctx)
 		if err != nil {
 			if ctx.Err() != nil {
+				logger.Info("Payment Service stopping")
 				break
 			}
 			logger.Error("failed to fetch message", "error", err)
@@ -116,6 +117,8 @@ func main() {
 				if ev.Type != "OrderCreated" {
 					return nil
 				}
+
+				logger.Info("Received event", "type", ev.Type, "correlation_id", ev.CorrelationID, "event_id", ev.ID)
 
 				tx, err := pgPool.Begin(ctx)
 				if err != nil {

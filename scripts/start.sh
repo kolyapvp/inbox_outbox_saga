@@ -12,7 +12,7 @@ echo -e "${BLUE}=== Starting Project (Backend + Frontend) ===${NC}"
 
 # 1. Build Go Binaries
 echo -e "${BLUE}[1/5] Building Go Services...${NC}"
-mkdir -p bin
+mkdir -p bin logs
 go build -o bin/api cmd/api/main.go || { echo -e "${RED}Failed to build API${NC}"; exit 1; }
 go build -o bin/worker cmd/worker/main.go || { echo -e "${RED}Failed to build Worker${NC}"; exit 1; }
 go build -o bin/consumer cmd/consumer/main.go || { echo -e "${RED}Failed to build Order Consumer${NC}"; exit 1; }
@@ -55,33 +55,35 @@ export POSTGRES_HOST=localhost
 export POSTGRES_PORT=5433
 export REDIS_ADDR=localhost:6379
 export KAFKA_BROKERS=127.0.0.1:9092
+export KAFKA_TOPIC=orders-events
+export KAFKA_START_OFFSET=latest
 
 # API
-./bin/api > api.log 2>&1 &
+nohup ./bin/api > logs/api.log 2>&1 &
 API_PID=$!
 echo $API_PID >> $PIDS_FILE
 echo -e "${GREEN}API started (PID: $API_PID)${NC}"
 
 # Worker
-./bin/worker > worker.log 2>&1 &
+nohup ./bin/worker > logs/worker.log 2>&1 &
 WORKER_PID=$!
 echo $WORKER_PID >> $PIDS_FILE
 echo -e "${GREEN}Worker started (PID: $WORKER_PID)${NC}"
 
 # Consumer
-KAFKA_GROUP_ID=order-service ./bin/consumer > consumer.log 2>&1 &
+nohup env KAFKA_GROUP_ID=order-service ./bin/consumer > logs/consumer.log 2>&1 &
 CONSUMER_PID=$!
 echo $CONSUMER_PID >> $PIDS_FILE
 echo -e "${GREEN}Consumer started (PID: $CONSUMER_PID)${NC}"
 
 # Payment Service
-KAFKA_GROUP_ID=payment-service ./bin/payment > payment.log 2>&1 &
+nohup env KAFKA_GROUP_ID=payment-service ./bin/payment > logs/payment.log 2>&1 &
 PAYMENT_PID=$!
 echo $PAYMENT_PID >> $PIDS_FILE
 echo -e "${GREEN}Payment Service started (PID: $PAYMENT_PID)${NC}"
 
 # Ticket Service
-KAFKA_GROUP_ID=ticket-service ./bin/ticket > ticket.log 2>&1 &
+nohup env KAFKA_GROUP_ID=ticket-service ./bin/ticket > logs/ticket.log 2>&1 &
 TICKET_PID=$!
 echo $TICKET_PID >> $PIDS_FILE
 echo -e "${GREEN}Ticket Service started (PID: $TICKET_PID)${NC}"
@@ -89,7 +91,7 @@ echo -e "${GREEN}Ticket Service started (PID: $TICKET_PID)${NC}"
 # 4. Start Frontend
 echo -e "${BLUE}[4/5] Starting Frontend...${NC}"
 cd frontend
-npm run dev > ../frontend.log 2>&1 &
+nohup npm run dev > ../logs/frontend.log 2>&1 &
 FRONTEND_PID=$!
 cd ..
 echo $FRONTEND_PID >> $PIDS_FILE
@@ -100,5 +102,5 @@ echo -e "${BLUE}=== System Ready ===${NC}"
 echo -e "Frontend: ${GREEN}http://localhost:5173${NC}"
 echo -e "API:      ${GREEN}http://localhost:8080${NC}"
 echo -e "Grafana:  ${GREEN}http://localhost:3000${NC}"
-echo -e "Logs available in: api.log, worker.log, consumer.log, payment.log, ticket.log, frontend.log"
+echo -e "Logs available in: logs/ directory"
 echo -e "Run 'make down' to stop everything."

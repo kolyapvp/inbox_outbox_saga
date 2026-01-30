@@ -42,7 +42,7 @@ type Redis struct {
 
 type Kafka struct {
 	Brokers []string `yaml:"brokers" env:"KAFKA_BROKERS" env-default:"localhost:9092"`
-	Topic   string   `yaml:"topic" env:"KAFKA_TOPIC" env-default:"orders"`
+	Topic   string   `yaml:"topic" env:"KAFKA_TOPIC" env-default:"orders-events"`
 	GroupID string   `yaml:"group_id" env:"KAFKA_GROUP_ID" env-default:"orders-consumer-group-1"`
 }
 

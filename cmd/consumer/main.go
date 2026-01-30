@@ -80,12 +80,13 @@ func main() {
 	defer kafkaConsumer.Close()
 
 	consumerName := "order-service"
-	logger.Info("Order Consumer Started", "consumer", consumerName, "group_id", groupID)
+	logger.Info("Order Consumer Started", "consumer", consumerName, "group_id", groupID, "topic", cfg.Kafka.Topic, "brokers", cfg.Kafka.Brokers)
 
 	for {
 		msg, err := kafkaConsumer.FetchMessage(ctx)
 		if err != nil {
 			if ctx.Err() != nil {
+				logger.Info("Order Consumer stopping")
 				break
 			}
 			logger.Error("failed to fetch message", "error", err)

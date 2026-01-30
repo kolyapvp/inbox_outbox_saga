@@ -154,6 +154,9 @@
     ```bash
     go run cmd/api/main.go
     go run cmd/worker/main.go
+    # Чтобы не ждать обработки старых сообщений в Kafka, можно стартовать с latest
+    # (внутри start.sh это выставляется автоматически).
+    export KAFKA_START_OFFSET=latest
     KAFKA_GROUP_ID=order-service go run cmd/consumer/main.go
     KAFKA_GROUP_ID=payment-service go run cmd/payment/main.go
     KAFKA_GROUP_ID=ticket-service go run cmd/ticket/main.go
